@@ -27,3 +27,8 @@ mybatis-plus:
 logging:
   level:
     com.remark: debug
+
+aliyun:
+  sms:
+    accessKey: ${remark.alibaba.sms.accessKey}
+    accessSecret: ${remark.alibaba.sms.accessSercet}

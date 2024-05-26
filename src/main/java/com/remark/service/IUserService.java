@@ -1,7 +1,10 @@
 package com.remark.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.remark.dto.LoginFormDTO;
+import com.remark.dto.Result;
 import com.remark.entity.User;
+import javax.servlet.http.HttpSession;
 
 /**
  * <p>
@@ -13,4 +16,7 @@ import com.remark.entity.User;
  */
 public interface IUserService extends IService<User> {
 
+    Result sendCode(String phone, HttpSession session);
+
+    Result login(LoginFormDTO loginForm, HttpSession session);
 }
