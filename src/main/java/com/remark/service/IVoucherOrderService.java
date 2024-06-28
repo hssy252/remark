@@ -1,5 +1,6 @@
 package com.remark.service;
 
+import com.remark.dto.Result;
 import com.remark.entity.VoucherOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IVoucherOrderService extends IService<VoucherOrder> {
 
+
+    Result seckillVoucher(Long voucherId);
+
+    Result seckillResult(Long voucherId);
 }

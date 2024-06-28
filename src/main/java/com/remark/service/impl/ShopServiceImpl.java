@@ -44,10 +44,10 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         //Shop shop=queryWithPassThrough(id);
 
         //互斥锁解决缓存击穿
-        //Shop shop = queryWithMutex(id);
+        Shop shop = queryWithMutex(id);
 
         //逻辑过期解决缓存击穿
-        Shop shop = queryWithLogicExpire(id);
+        //Shop shop = queryWithLogicExpire(id);
         if (shop == null) {
             return Result.fail("店铺不存在");
         }
@@ -138,9 +138,6 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
             //获取互斥锁成功则重建缓存
             shop = getById(id);
 
-            //模拟重建缓存的延迟
-            Thread.sleep(200);
-
             //3.数据库没查到则返回不存在
             if (shop == null) {
                 //防止缓存穿透，存入空对象
@@ -153,7 +150,7 @@ public class ShopServiceImpl extends ServiceImpl<ShopMapper, Shop> implements IS
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         } finally {
-            unLock(key);
+            unLock(lockKey);
         }
         return shop;
 

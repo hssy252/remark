@@ -32,7 +32,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 "/user/code",
                 "/user/login"
             ).order(1);
-        registry.addInterceptor(new RefreshTokenInterceptor()).addPathPatterns("/**").order(0);
+        registry.addInterceptor(new RefreshTokenInterceptor(stringRedisTemplate)).addPathPatterns("/**").order(0);
     }
 
 
