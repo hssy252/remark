@@ -7,13 +7,13 @@ import com.remark.entity.VoucherOrder;
 import com.remark.mapper.VoucherOrderMapper;
 import com.remark.service.ISeckillVoucherService;
 import com.remark.service.IVoucherOrderService;
-import com.remark.service.IVoucherService;
 import com.remark.utils.RedisIdWorker;
 import com.remark.utils.UserHolder;
 import java.time.LocalDateTime;
 import javax.annotation.Resource;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +35,9 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
     @Autowired
     private RedisIdWorker redisIdWorker;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
     public Result seckillVoucher(Long voucherId) {
         //1.检查优惠券是否开始
@@ -54,6 +57,16 @@ public class VoucherOrderServiceImpl extends ServiceImpl<VoucherOrderMapper, Vou
             return Result.fail("秒杀券已被抢尽");
         }
         Long userId = UserHolder.getUser().getId();
+
+//        SimpleRedisLock simpleRedisLock = new SimpleRedisLock("order:" + userId, stringRedisTemplate);
+//        simpleRedisLock.tryLock(12);
+//        try {
+//            Thread.sleep(1000);
+//        } catch (InterruptedException e) {
+//            throw new RuntimeException(e);
+//        }
+//        simpleRedisLock.unLock();
+
         //如果不加intern，每一次toString其实产生的是一个新的对象
         //锁加在这里是因为，如果锁加在方法内部，那么锁解开了事务才会提交，所以锁的范围要扩大
         synchronized (userId.toString().intern()) {
