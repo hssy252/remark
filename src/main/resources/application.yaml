@@ -32,3 +32,7 @@ aliyun:
   sms:
     accessKey: ${remark.alibaba.sms.accessKey}
     accessSecret: ${remark.alibaba.sms.accessSercet}
+
+redisson:
+  url: ${ecs.redis.url}
+  password: ${ecs.redis.password}
